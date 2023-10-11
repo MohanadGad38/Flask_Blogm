@@ -1,8 +1,10 @@
 from datetime import datetime
 from flaskblog import db
-
+from flaskblog import app
 # database
 # users table
+with app.app_context():
+    db.create_all()
 
 
 class Users(db.Model):

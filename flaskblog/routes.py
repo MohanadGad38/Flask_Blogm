@@ -2,6 +2,8 @@ from flaskblog.models import Users, Posts
 from flask import render_template, url_for, flash, redirect
 from flaskblog.form import RegistriationForm, LoginForm
 from flaskblog import app
+
+
 # craeting database  SQLAlCHEMY
 posts = [
     {
