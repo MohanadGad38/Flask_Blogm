@@ -47,9 +47,15 @@ def register():
 # Start of Login Form
 
 
-@app.route("/Login")
+@app.route("/Login", methods=['GET', 'POST'])
 def Login():
     formm = LoginForm()
+    if formm.validate_on_submit():
+        if formm.Email.data == "m@gmail.com" and formm.password.data == "121212":
+            flash('You have been logged in', 'success')
+            return redirect(url_for('home'))
+        else:
+            flash('wrong input', 'danger')
     return render_template('Login.html', title='Login', form=formm)
 # end of Login Form
 
