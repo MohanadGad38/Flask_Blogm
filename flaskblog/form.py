@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField
-from wtforms.validators import DataRequired, Length, Email, EqualTo
+from wtforms.validators import DataRequired, Length, Email, EqualTo,ValidationError
+from flaskblog.models import Users,Posts
 
 # Start of register Form
 
@@ -15,6 +16,15 @@ class RegistriationForm(FlaskForm):
     confirmPassword = PasswordField('Confirm Password', validators=[
         DataRequired(), EqualTo('password')])
     sumbit = SubmitField('Sign Up')
+    def validate_username(self, username):
+        user=Users.query.filter_by(Username=username.data).first()
+        if user:
+            raise ValidationError("that username is taken ,change it")
+        
+    def validate_Email(self, Email):
+        email=Users.query.filter_by(Email=Email.data).first()
+        if email:
+            raise ValidationError("that email used before ")
 # end of register Form
 
 # Start of login Form
