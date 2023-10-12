@@ -1,7 +1,7 @@
 from flaskblog.models import Users, Posts
 from flask import render_template, url_for, flash, redirect
 from flaskblog.form import RegistriationForm, LoginForm
-from flaskblog import app
+from flaskblog import app,db,bcrypt
 
 
 # craeting database  SQLAlCHEMY
@@ -43,8 +43,12 @@ def about():
 def register():
     formm = RegistriationForm()
     if formm.validate_on_submit():
-        flash(f'accout created for {formm.username.data}!', 'success')
-        return redirect(url_for('home'))
+        hashed_password=bcrypt.generate_password_hash(formm.password.data).decode('utf-8')
+        user=Users(Username=formm.username.data,Email=formm.Email.data,password= hashed_password)
+        db.session.add(user)
+        db.session.commit()
+        flash(f'accout created you can now login', 'success')
+        return redirect(url_for('Login'))
     return render_template('Register.html', title='register', form=formm)
 # end of register Form
 # Start of Login Form
