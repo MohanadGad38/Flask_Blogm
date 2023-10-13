@@ -16,12 +16,12 @@ class RegistriationForm(FlaskForm):
     confirmPassword = PasswordField('Confirm Password', validators=[
         DataRequired(), EqualTo('password')])
     sumbit = SubmitField('Sign Up')
-    def validate_username(self, username):
+    def validate_username(self, username) -> Users :
         user=Users.query.filter_by(Username=username.data).first()
         if user:
             raise ValidationError("that username is taken ,change it")
         
-    def validate_Email(self, Email):
+    def validate_Email(self, Email)->Users:
         email=Users.query.filter_by(Email=Email.data).first()
         if email:
             raise ValidationError("that email used before ")

@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "blogm"
+version = "0.1.0"
+description = ""
+authors = ["MohanadGad38 <90938419+MohanadGad38@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+flask = "2.3.0"
+bcrypt="4.0.1"
+blinker="1.6.2"
+click="8.1.7"
+dnspython="2.4.2"
+email-validator="2.0.0.post2"
+Flask-Bcrypt="1.0.1"
+Flask-Login="0.6.2"
+Flask-SQLAlchemy="3.1.1"
+Flask-WTF="1.2.1"
+idna="3.4"
+itsdangerous="2.1.2"
+MarkupSafe="2.1.3"
+SQLAlchemy="2.0.21"
+typing_extensions="4.8.0"
+Werkzeug="2.3.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

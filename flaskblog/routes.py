@@ -1,8 +1,8 @@
 from flaskblog.models import Users, Posts
 from flask import render_template, url_for, flash, redirect
 from flaskblog.form import RegistriationForm, LoginForm
-from flaskblog import app,db,bcrypt
-
+from flaskblog import app,db,bcrypt,login_manager
+from flask_login import login_user
 
 # craeting database  SQLAlCHEMY
 posts = [
@@ -58,10 +58,11 @@ def register():
 def Login():
     formm = LoginForm()
     if formm.validate_on_submit():
-        if formm.Email.data == "m@gmail.com" and formm.password.data == "121212":
-            flash('You have been logged in', 'success')
-            return redirect(url_for('home'))
-        else:
-            flash('wrong input', 'danger')
+       user=Users.query.filter_by(Email=formm.Email.data).first()
+       if user and bcrypt.check_password_hash(user.password,formm.password.data):
+        login_user(user,remember=formm.remember.data)
+        return redirect(url_for('home'))
+       else:
+           flash('wrong input', 'danger')
     return render_template('Login.html', title='Login', form=formm)
 # end of Login Form

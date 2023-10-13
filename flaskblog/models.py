@@ -1,19 +1,22 @@
 from datetime import datetime
 from flaskblog import db
-from flaskblog import app
+from flaskblog import app,login_manager,LoginManager
+from flask_login import UserMixin
 # database
 # users table
 with app.app_context():
     db.create_all()
-
-
-class Users(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    Username = db.Column(db.String(20), unique=True, nullable=False)
-    Email = db.Column(db.String(20), unique=True, nullable=False, )
-    Image_file = db.Column(db.String(20), nullable=False,
+@login_manager.user_loader
+def load_user(user_id):
+    return Users.query.get(int(user_id))
+    
+class Users(db.Model,UserMixin):
+    id:int = db.Column(db.Integer, primary_key=True)
+    Username:str = db.Column(db.String(20), unique=True, nullable=False)
+    Email:str= db.Column(db.String(20), unique=True, nullable=False, )
+    Image_file:str = db.Column(db.String(20), nullable=False,
                            default='default.jpg')
-    password = db.Column(db.String(60), nullable=False)
+    password:str = db.Column(db.String(60), nullable=False)
     post = db.relationship('Posts', backref='author', lazy=True)
 
 
