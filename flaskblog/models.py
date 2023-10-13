@@ -27,11 +27,11 @@ def __repo__(self):
 
 
 class Posts(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(100), nullable=False)
-    date = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
-    content = db.Column(db.Text, nullable=False)
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
+    id:int = db.Column(db.Integer, primary_key=True)
+    title:str = db.Column(db.String(100), nullable=False)
+    date:datetime = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content:str = db.Column(db.Text, nullable=False)
+    user_id:int = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
 
 def __repo__(self):

@@ -2,7 +2,7 @@ from flaskblog.models import Users, Posts
 from flask import render_template, url_for, flash, redirect
 from flaskblog.form import RegistriationForm, LoginForm
 from flaskblog import app,db,bcrypt,login_manager
-from flask_login import login_user
+from flask_login import login_user,current_user,logout_user
 
 # craeting database  SQLAlCHEMY
 posts = [
@@ -41,7 +41,10 @@ def about():
 
 @app.route("/register", methods=['GET', 'POST'])
 def register():
-    formm = RegistriationForm()
+    formm=RegistriationForm()
+    if current_user.is_authenticated:
+      return redirect(url_for('home'))
+      formm = RegistriationForm()
     if formm.validate_on_submit():
         hashed_password=bcrypt.generate_password_hash(formm.password.data).decode('utf-8')
         user=Users(Username=formm.username.data,Email=formm.Email.data,password= hashed_password)
@@ -56,6 +59,8 @@ def register():
 
 @app.route("/Login", methods=['GET', 'POST'])
 def Login():
+    if current_user.is_authenticated:
+      return redirect(url_for('home'))
     formm = LoginForm()
     if formm.validate_on_submit():
        user=Users.query.filter_by(Email=formm.Email.data).first()
@@ -66,3 +71,11 @@ def Login():
            flash('wrong input', 'danger')
     return render_template('Login.html', title='Login', form=formm)
 # end of Login Form
+
+
+
+# Logout route
+@app.route("/Logout")
+def Logout():
+   logout_user()
+   return redirect(url_for('home'))
