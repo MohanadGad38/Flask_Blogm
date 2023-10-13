@@ -51,14 +51,14 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash(f'accout created you can now login', 'success')
-        return redirect(url_for('Login'))
+        return redirect(url_for('login'))
     return render_template('Register.html', title='register', form=formm)
 # end of register Form
 # Start of Login Form
 
 
-@app.route("/Login", methods=['GET', 'POST'])
-def Login():
+@app.route("/login", methods=['GET', 'POST'])
+def login():
     if current_user.is_authenticated:
       return redirect(url_for('home'))
     formm = LoginForm()
@@ -75,7 +75,7 @@ def Login():
 
 
 # Logout route
-@app.route("/Logout")
+@app.route("/logout")
 def Logout():
    logout_user()
    return redirect(url_for('home'))
@@ -83,5 +83,7 @@ def Logout():
 
 @app.route("/Account")
 def Account():
-   return render_template('Account.html',title='Account',user=current_user)
-   
+     if current_user.is_authenticated:
+      return render_template('Account.html',title='Account',user=current_user)
+     else:
+       return redirect(url_for('login'))
