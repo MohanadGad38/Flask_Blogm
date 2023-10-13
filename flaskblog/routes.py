@@ -1,8 +1,9 @@
+import time
 from flaskblog.models import Users, Posts
-from flask import render_template, url_for, flash, redirect
+from flask import render_template, url_for, flash, redirect,request
 from flaskblog.form import RegistriationForm, LoginForm
 from flaskblog import app,db,bcrypt,login_manager
-from flask_login import login_user,current_user,logout_user
+from flask_login import login_user,current_user,logout_user,login_required
 
 # craeting database  SQLAlCHEMY
 posts = [
@@ -58,6 +59,8 @@ def register():
 
 
 @app.route("/login", methods=['GET', 'POST'])
+
+
 def login():
     if current_user.is_authenticated:
       return redirect(url_for('home'))
@@ -66,7 +69,8 @@ def login():
        user=Users.query.filter_by(Email=formm.Email.data).first()
        if user and bcrypt.check_password_hash(user.password,formm.password.data):
         login_user(user,remember=formm.remember.data)
-        return redirect(url_for('home'))
+        next_page=request.args.get('next')
+        return redirect(next_page) if next_page else redirect(url_for('home'))
        else:
            flash('wrong input', 'danger')
     return render_template('Login.html', title='Login', form=formm)
@@ -76,14 +80,14 @@ def login():
 
 # Logout route
 @app.route("/logout")
-def Logout():
+def logout():
    logout_user()
    return redirect(url_for('home'))
 
 
 @app.route("/Account")
+@login_required
 def Account():
      if current_user.is_authenticated:
       return render_template('Account.html',title='Account',user=current_user)
-     else:
-       return redirect(url_for('login'))
+  
