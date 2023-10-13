@@ -79,3 +79,9 @@ def Login():
 def Logout():
    logout_user()
    return redirect(url_for('home'))
+
+
+@app.route("/Account")
+def Account():
+   return render_template('Account.html',title='Account',user=current_user)
+   
