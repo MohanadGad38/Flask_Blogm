@@ -16,7 +16,7 @@ import os
 @app.route("/home")
 def home():
     page=request.args.get('page',1,type=int)
-    post=Posts.query.paginate(page=page,per_page=5)
+    post=Posts.query.order_by(Posts.date.desc()).paginate(page=page,per_page=5)
     return render_template('home.html', posts=post)
 # end of register Form
 
@@ -162,3 +162,15 @@ def delete_post(Posts_id):
  db.session.commit()
  flash('your post has been deleted','success')
  return redirect(url_for('home'))
+
+
+
+
+@app.route("/user/<string:username>")
+def user_posts(username):
+    page = request.args.get('page', 1, type=int)
+    user = Users.query.filter_by(Username=username).first_or_404()
+    post = Posts.query.filter_by(author=user)\
+        .order_by(Posts.date.desc())\
+        .paginate(page=page, per_page=5)
+    return render_template('user_post.html', posts=post, user=user)
