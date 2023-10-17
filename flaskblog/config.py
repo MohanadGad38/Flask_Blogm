@@ -10,6 +10,6 @@ class Config:
   MAIL_USE_TLS= True
   MAIL_PASSWORD=os.environ.get('PASS_M')
   MAIL_USERNAME = os.environ.get('EMAIL_M')
-  print(os.environ.get('PASS_M'))
+  
 
 
