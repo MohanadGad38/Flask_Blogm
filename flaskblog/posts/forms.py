@@ -10,4 +10,4 @@ class Postform(FlaskForm):
                            DataRequired()])   
 
     content=TextAreaField('content',validators=[DataRequired()])
-    sumbit = SubmitField('create new post')
+    sumbit = SubmitField(' post')

@@ -2,7 +2,7 @@ from flask import Blueprint
 from flaskblog.users.forms import RegistriationForm, LoginForm,UpdateAccountForm,RequestResetForm,ResetPasswordForm
 from flaskblog.models import Users, Posts
 from flask_login import login_user,current_user,logout_user,login_required
-from flaskblog import app,db,bcrypt,login_manager,mail
+from flaskblog import db,bcrypt,login_manager,mail
 from flask import render_template, url_for, flash, redirect,request,abort
 from PIL import Image
 from flaskblog.users.utils import save_picture, send_reset_email
