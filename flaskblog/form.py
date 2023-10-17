@@ -11,7 +11,7 @@ class RegistriationForm(FlaskForm):
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     Email = StringField('Email', validators=[
-        DataRequired(), Length(min=2, max=20), Email()])
+        DataRequired(), Length(min=2, max=50), Email()])
     password = PasswordField('Password', validators=[
                              DataRequired(), Length(min=6, max=30)])
     confirmPassword = PasswordField('Confirm Password', validators=[
@@ -34,7 +34,7 @@ class RegistriationForm(FlaskForm):
 class LoginForm(FlaskForm):
 
     Email = StringField('Email', validators=[
-        DataRequired(), Length(min=2, max=20), Email()])
+        DataRequired(), Length(min=2, max=100), Email()])
     password = PasswordField('Password', validators=[
                              DataRequired(), Length(min=6, max=30)])
     remember = BooleanField('Remember me')
@@ -46,7 +46,7 @@ class UpdateAccountForm(FlaskForm):
     username = StringField('Username', validators=[
                            DataRequired(), Length(min=2, max=20)])
     Email = StringField('Email', validators=[
-        DataRequired(), Length(min=2, max=20), Email()])
+        DataRequired(), Length(min=2, max=100), Email()])
     picture =FileField('upload picture',validators=[FileAllowed(['jpg','png'])])
     sumbit = SubmitField('update')
     def validate_username(self, username):
@@ -70,3 +70,20 @@ class Postform(FlaskForm):
     content=TextAreaField('content',validators=[DataRequired()])
     sumbit = SubmitField('create new post')
 
+class RequestResetForm(FlaskForm):
+
+       Email = StringField('Email', validators=[
+        DataRequired(), Length(min=2, max=100), Email()])
+       sumbit = SubmitField('Request passowrd reset')
+def validate_Email(self, Email)->Users:
+        email=Users.query.filter_by(Email=Email.data).first()
+        if email is None:
+            raise ValidationError("there is no account with that email ")
+        
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[
+                             DataRequired(), Length(min=6, max=30)])
+    confirmPassword = PasswordField('Confirm Password', validators=[
+        DataRequired(), EqualTo('password')])
+    sumbit = SubmitField('Reset passowrd ')
